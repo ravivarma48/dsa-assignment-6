@@ -1,0 +1,475 @@
+                                                             ASSINGHMENT 6
+       
+       1.Write a Program to delete a node in the linked list.  [Note - Program should take a key number as input and delete that particular node.]
+    ANS.// Simple C code to delete node at particular position
+
+#include<stdio.h>
+#include<stdlib.h>
+
+void insert(int );
+void display_List();
+void delete(int );
+
+struct node			 // Structure declaration
+{
+	int data;
+	struct node *next; // Self referral pointer
+}*head=NULL,*tail=NULL; // Initial value of Head and Tail pointer is NULL
+
+
+void delete(int pos)
+{
+	struct node *temp = head;	 // Creating a temporary variable pointing to head
+	int i;					
+	if(pos==0)
+	{
+		printf("\nElement deleted is : %d\n",temp->data);
+		head=head->next;	 // Advancing the head pointer
+		temp->next=NULL;
+		free(temp);			 // Node is deleted
+	}
+	else
+	{
+		for(i=0;i<pos-1;i++)
+		{
+			temp=temp->next;
+		}
+		// Now temp pointer points to the previous node of the node to be deleted
+		struct node *del =temp->next;	 // del pointer points to the node to be deleted
+		temp->next=temp->next->next;
+		printf("\nElement deleted is : %d\n",del->data);	
+		del->next=NULL;
+		free(del);						 // Node is deleted
+	}
+	printf("\nUpdated Linked List is : \n");
+	display_List();
+	return ;
+}
+
+
+
+void insert(int value)
+{
+	struct node *newnode; // Creating a new node
+	newnode = (struct node *)malloc(sizeof(struct node)); // Allocating dynamic memory
+
+	newnode->data = value;	 // Assigning value to newnode
+	newnode->next = NULL;	
+
+	if(head==NULL)	 // Checking if List is empty
+	{
+		head = newnode;
+		tail = newnode;
+	}
+	else			 // If not empty then...
+	{
+		tail->next=newnode;	
+		tail=newnode;	 // Updating the tail node with each insertion
+	}
+	return ;
+}
+
+void display_List()
+{
+	struct node *temp; // Creating a temporary pointer to the structure
+	temp=head;		 // temp points to head;
+	while(temp!=NULL)
+	{
+		if(temp->next==NULL)
+		{
+			printf(" %d->NULL",temp->data);
+		}
+		else
+		{
+			printf(" %d->",temp->data);
+		}
+		temp=temp->next;		 // Traversing the List till end
+	}
+	printf("\n");
+	return ;
+}
+// --Driver Code--
+int main()
+{
+	insert(10);
+	insert(20);
+	insert(30);
+	insert(40);
+	insert(50);
+	insert(60);
+	printf("\n--Created Linked List--\n");
+	display_List();
+	printf("\nLinked List after deletion at position 0");
+	delete(0);								 // List indexing starts from 0
+	printf("\nLinked List after deletion at position 2");
+	delete(2);
+	return 0;
+}
+
+
+2.Write a Program to Find the middle node of the Linked List using Loop.
+ans.// C program to find middle of linked list
+#include<stdio.h>
+#include<stdlib.h>
+
+/* Link list node */
+struct Node
+{
+	int data;
+	struct Node* next;
+};
+
+/* Function to get the middle of the linked list*/
+void printMiddle(struct Node *head)
+{
+	struct Node *slow_ptr = head;
+	struct Node *fast_ptr = head;
+
+	if (head!=NULL)
+	{
+		while (fast_ptr != NULL && fast_ptr->next != NULL)
+		{
+			fast_ptr = fast_ptr->next->next;
+			slow_ptr = slow_ptr->next;
+		}
+		printf("The middle element is [%d]\n\n", slow_ptr->data);
+	}
+}
+
+void push(struct Node** head_ref, int new_data)
+{
+	/* allocate node */
+	struct Node* new_node =
+		(struct Node*) malloc(sizeof(struct Node));
+
+	/* put in the data */
+	new_node->data = new_data;
+
+	/* link the old list off the new node */
+	new_node->next = (*head_ref);
+
+	/* move the head to point to the new node */
+	(*head_ref) = new_node;
+}
+
+// A utility function to print a given linked list
+void printList(struct Node *ptr)
+{
+	while (ptr != NULL)
+	{
+		printf("%d->", ptr->data);
+		ptr = ptr->next;
+	}
+	printf("NULL\n");
+}
+
+/* Driver program to test above function*/
+int main()
+{
+	/* Start with the empty list */
+	struct Node* head = NULL;
+	int i;
+
+	for (i=5; i>0; i--)
+	{
+		push(&head, i);
+		printList(head);
+		printMiddle(head);
+	}
+
+	return 0;
+}
+
+3.Write a Program to Find the Nth node of the linked list. 
+Ans.#include <iostream>
+using namespace std;
+class Node{
+   public:
+   int data;
+   Node* next;
+};
+void insertNode(Node** head_ref, int new_data) {
+   Node* new_node = new Node();
+   new_node->data = new_data;
+   new_node->next = (*head_ref);
+   (*head_ref) = new_node;
+}
+int findNodeAt(Node* head, int index) {
+   Node* current = head;
+   int count = 0;
+   while (current != NULL){
+      if (count == index)
+         return(current->data);
+      count++;
+      current = current->next;
+   }
+}
+int main(){
+   Node* head = NULL;
+   insertNode(&head, 8);
+ insertNode(&head, 2);
+   insertNode(&head, 9);
+   insertNode(&head, 1);
+   insertNode(&head, 4);
+   int n = 2;
+   cout<<"Element at index "<<n<<" is "<<findNodeAt(head, 2);
+   return 0;
+}
+
+4.Write a Program to print the linked list in reverse order.
+ans.# Python3 Program to print doubly
+# linked list in reverse order
+import math
+
+# Doubly linked list node
+class Node:
+	def __init__(self, data):
+		self.data = data
+		self.next = None
+
+# Function to print nodes of Doubly
+# Linked List in reverse order
+def reversePrint(head_ref):
+	tail = head_ref
+
+	# Traversing till tail of the linked list
+	while (tail.next != None):
+		tail = tail.next
+
+	# Traversing linked list from tail
+	# and print the node.data
+	while (tail != head_ref):
+		print(tail.data, end = " ")
+		tail = tail.prev
+	
+	print(tail.data)
+
+# UTILITY FUNCTIONS
+# Function to insert a node at the
+# beginning of the Doubly Linked List
+def push(head_ref, new_data):
+	
+	# allocate node
+	new_node = Node(new_data)
+
+	# put in the data
+	new_node.data = new_data
+
+	# since we are adding at the beginning,
+	# prev is always None
+	new_node.prev = None
+
+	# link the old list off the new node
+	new_node.next = head_ref
+
+	# change prev of head node to new node
+	if (head_ref != None):
+		head_ref.prev = new_node
+
+	# move the head to po to the new node
+	head_ref = new_node
+	return head_ref
+
+# Driver Code
+if __name__=='__main__':
+	
+	# Start with the empty list
+	head = None
+
+	# Let us create a sorted linked list
+	# to test the functions
+	# Created linked list will be 10.8.4.2
+	head = push(head, 2)
+	head = push(head, 4)
+	head = push(head, 8)
+	head = push(head, 10)
+
+	print("Linked List elements in reverse order : ")
+
+	reversePrint(head)
+
+5.Write a Program to Program to insert a node in the middle of a doubly linked list.
+ans.# Python3 Program to print doubly
+# linked list in reverse order
+import math
+
+# Doubly linked list node
+class Node:
+	def __init__(self, data):
+		self.data = data
+		self.next = None
+
+# Function to print nodes of Doubly
+# Linked List in reverse order
+def reversePrint(head_ref):
+	tail = head_ref
+
+	# Traversing till tail of the linked list
+	while (tail.next != None):
+		tail = tail.next
+
+	# Traversing linked list from tail
+	# and print the node.data
+	while (tail != head_ref):
+		print(tail.data, end = " ")
+		tail = tail.prev
+	
+	print(tail.data)
+
+# UTILITY FUNCTIONS
+# Function to insert a node at the
+# beginning of the Doubly Linked List
+def push(head_ref, new_data):
+	
+	# allocate node
+	new_node = Node(new_data)
+
+	# put in the data
+	new_node.data = new_data
+
+	# since we are adding at the beginning,
+	# prev is always None
+	new_node.prev = None
+
+	# link the old list off the new node
+	new_node.next = head_ref
+
+	# change prev of head node to new node
+	if (head_ref != None):
+		head_ref.prev = new_node
+
+	# move the head to po to the new node
+	head_ref = new_node
+	return head_ref
+
+# Driver Code
+if __name__=='__main__':
+	
+	# Start with the empty list
+	head = None
+
+	# Let us create a sorted linked list
+	# to test the functions
+	# Created linked list will be 10.8.4.2
+	head = push(head, 2)
+	head = push(head, 4)
+	head = push(head, 8)
+	head = push(head, 10)
+
+	print("Linked List elements in reverse order : ")
+
+	reversePrint(head)
+
+6.Write a Program to Program to search a node in a double-linked list.
+Ans.
+// C# program to implement
+// the above approach
+using System;
+
+class GFG{
+
+// Structure of a node of
+// the doubly linked list
+public class Node
+{
+	
+	// Stores data value
+	// of a node
+	public int data;
+	
+	// Stores pointer
+	// to next node
+	public Node next;
+	
+	// Stores pointer
+	// to previous node
+	public Node prev;
+};
+
+// Function to insert a node at the
+// beginning of the Doubly Linked List
+static Node push(Node head_ref, int new_data)
+{
+	
+	// Allocate memory for new node
+	Node new_node = new Node();
+	
+	// Insert the data
+	new_node.data = new_data;
+	
+	// Since node is added at the
+	// beginning, prev is always null
+	new_node.prev = null;
+	
+	// Link the old list to the new node
+	new_node.next = head_ref;
+	
+	// If pointer to head is not null
+	if (head_ref != null)
+	{
+		
+		// Change the prev of head
+		// node to new node
+		head_ref.prev = new_node;
+	}
+	
+	// Move the head to point to the new node
+	head_ref = new_node;
+	return head_ref;
+}
+
+// Function to find the position of
+// an integer in doubly linked list
+static int search(Node head_ref, int x)
+{
+	
+	// Stores head Node
+	Node temp = head_ref;
+	
+	// Stores position of the integer
+	// in the doubly linked list
+	int pos = 0;
+	
+	// Traverse the doubly linked list
+	while (temp.data != x &&
+		temp.next != null)
+	{
+		
+		// Update pos
+		pos++;
+		
+		// Update temp
+		temp = temp.next;
+	}
+	
+	// If the integer not present
+	// in the doubly linked list
+	if (temp.data != x)
+		return -1;
+		
+	// If the integer present in
+	// the doubly linked list
+	return (pos + 1);
+}
+
+// Driver Code
+public static void Main(String[] args)
+{
+	Node head = null;
+	int X = 8;
+	
+	// Create the doubly linked list
+	// 18 <-> 15 <-> 8 <-> 9 <-> 14
+	head = push(head, 14);
+	head = push(head, 9);
+	head = push(head, 8);
+	head = push(head, 15);
+	head = push(head, 18);
+	
+	Console.Write(search(head, X));
+}
+}
+
+
+
+
